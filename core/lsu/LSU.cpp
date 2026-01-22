@@ -883,6 +883,11 @@ namespace olympia
 
     void LSU::updateInstReplayReady_(const LoadStoreInstInfoPtr & load_store_info_ptr)
     {
+        if (load_store_info_ptr->getState() == LoadStoreInstInfo::IssueState::NOT_READY)
+        {
+        	ILOG("Instruction already scheduled for replay, not rescheduling: "<< load_store_info_ptr);
+        	return;
+    	}
         ILOG("Scheduled replay " << load_store_info_ptr << " after " << replay_issue_delay_
                                  << " cycles");
         load_store_info_ptr->setState(LoadStoreInstInfo::IssueState::NOT_READY);
